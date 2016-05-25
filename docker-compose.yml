@@ -21,5 +21,7 @@ services:
       - drupal:php-fpm
     volumes_from:
       - drupal
+    volumes:
+      - ./docroot/sites/all/modules/custom:/var/www/html/sites/all/modules/custom
     ports:
       - 80:80
