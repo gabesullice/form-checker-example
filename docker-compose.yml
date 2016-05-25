@@ -14,6 +14,7 @@ services:
     volumes:
       - ./.data/drupal/files:/var/www/html/sites/default/files
       - ./.data/drupal/settings.php:/var/www/html/sites/default/settings.php
+      - ./docroot/sites/all/modules/custom:/var/www/html/sites/all/modules/custom
   nginx:
     image: gabesullice/drocker-nginx
     links:
