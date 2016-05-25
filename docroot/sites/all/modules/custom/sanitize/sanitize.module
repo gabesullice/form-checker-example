@@ -10,5 +10,8 @@
  * Add JS to warn the user that they may be submitting sensitve information.
  */
 function sanitize_form_contact_entityform_edit_form_alter(&$form, $form_state, $form_id) {
-  var_export($form_id);
+  $module_dir = drupal_get_path('module', 'sanitize');
+  $form['#attached']['js'] = array(
+    $module_dir . '/js/sanitize.js',
+  );
 }
