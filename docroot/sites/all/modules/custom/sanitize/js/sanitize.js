@@ -7,10 +7,10 @@
       Sanitizer.prototype.checkSafe = function ($element) {
         var content, ssnMatcher;
         content = $element.val();
-        ssnMatcher = new RegExp(/\d{3}[ -.]?\d{2}[ -.]?\d{4}\b/, 'gm');
+        ssnMatcher = new RegExp(/\d{3}[ \-.]?\d{2}[ \-.]?\d{4}\b/, 'gm');
         // TODO: This should probably be a more robust expression for credit
         // card numbers.
-        ccnMatcher = new RegExp(/\d{4}[ -.]?\d{4}[ -.]?\d{4}[ -.]?\d{4}\b]/, 'gm');
+        ccnMatcher = new RegExp(/\d{4}[ \-.]?\d{4}[ \-.]?\d{4}[ \-.]?\d{4}\b]/, 'gm');
         if (content.match(ssnMatcher) || content.match(ccnMatcher)) {
           this.createAlert($element);
         }
