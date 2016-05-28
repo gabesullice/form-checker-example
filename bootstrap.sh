@@ -3,13 +3,20 @@
 set -e
 
 main () {
-  check_reqs docker-compose docker gzip ./db.sql.gz ./drocker
+  check_cmd_reqs docker-compose docker gzip
+  check_file_reqs ./db.sql.gz ./drocker
   bootstrap
 }
 
-check_reqs () {
+check_cmd_reqs () {
   for req in $@; do
     type "$req" &>/dev/null || bootstrap_error $req
+  done;
+}
+
+check_file_reqs () {
+  for req in $@; do
+    if [[ ! -f $req ]]; then bootstrap_error $req; fi
   done;
 }
 
@@ -26,7 +33,7 @@ up () {
 }
 
 import_db () {
-  ./drocker drush sql-import <(gzip -dc ./db.sql.gz)
+  gzip -dc ./db.sql.gz | ./drocker drush sqlc
 }
 
 bootstrap_error () {
