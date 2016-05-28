@@ -29,6 +29,8 @@ build () {
 }
 
 up () {
+  # make sure any old instances are cleaned up
+  docker-compose down 2>/dev/null || true
   docker-compose up -d
 }
 
