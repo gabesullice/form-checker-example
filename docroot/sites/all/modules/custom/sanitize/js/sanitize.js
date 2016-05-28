@@ -32,7 +32,9 @@
 
         // Parse text and textareas only.
         if ($src.is('input[type=text]') || $src.is('textarea')) {
-          sanitizer.checkSafe($src);
+          if (!$src.is('#edit-field-phone-und-0-value')) {
+            sanitizer.checkSafe($src);
+          }
         }
       }, this);
     }
