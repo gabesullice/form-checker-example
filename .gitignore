@@ -1,2 +1,4 @@
 .data/mysql
 .data/drupal/files
+*.sql
+*.sql.gz
