@@ -27,7 +27,7 @@ function sanitize_form_contact_entityform_edit_form_validate(&$form, &$form_stat
   $checkable = sanitize_get_check_fields($form_state['values']);
 
   $has_possible_private_value = array_filter(
-    $checkable, 
+    $checkable,
     'sanitize_value_contains_private_number'
   );
 
