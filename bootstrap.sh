@@ -33,11 +33,12 @@ up () {
 }
 
 import_db () {
+  printf "Waiting for MySQL to come up. Sleeping 1 minute...\n" >&2 && sleep 60
   gzip -dc ./db.sql.gz | ./drocker drush sqlc
 }
 
 bootstrap_error () {
-  printf "Bootstrapping requires that you have %b available.\n" $1
+  printf "Bootstrapping requires that you have %b available.\n" $1 >&2
   exit 1
 }
 
