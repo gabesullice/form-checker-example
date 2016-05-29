@@ -15,31 +15,39 @@ function sanitize_form_contact_entityform_edit_form_alter(&$form, $form_state) {
   $form['#attached']['js'] = array(
     $module_dir . '/js/sanitize.js',
   );
-  //
-  // In case JS is not enabled, set a server side validator.
-  $form['#validate'][] = 'sanitize_form_contact_entityform_edit_form_validate';
+
+  // In case JS is not enabled, set a server-side validator.
+  if (!isset($_COOKIE['has_js']) || !$_COOKIE['has_js']) {
+    $form['#validate'][] = 'sanitize_form_contact_entityform_edit_form_validate';
+  }
 }
 
 /**
  * Validates the contact form.
  */
 function sanitize_form_contact_entityform_edit_form_validate(&$form, &$form_state) {
+  // Don't revalidate if we've already done it. Trust the user.
+  if (isset($form_state['sanitize']['validated_once']) && $form_state['sanitize']['validated_once']) {
+    return;
+  }
+
+  // Get all fields to check.
   $checkable = sanitize_get_check_fields($form_state['values']);
 
+  // Check all fields for possible private values.
   $has_possible_private_value = array_filter(
     $checkable,
     'sanitize_value_contains_private_number'
   );
 
+  // Set a warning message if the values may contain private data.
   if (!empty($has_possible_private_value)) {
-    // For every probably private input, set a warning.
-    array_walk($has_possible_private_value, function ($value, $field_name) {
-      form_set_error(
-        $field_name,
-        "We're concerned that you may have entered some private information in this field, like your CARD number or Social Security number. If so, please remove it."
-      );
-    });
+    drupal_set_message("We're concerned that you may have entered some private information in this field, like your CARD number or Social Security number. If so, please remove it. Otherwise, just hit submit again to confirm.", 'warning');
+    $form_state['rebuild'] = TRUE;
   }
+
+  // Set a flag so that we don't do this twice.
+  $form_state['sanitize']['validated_once'] = TRUE;
 }
 
 /**
